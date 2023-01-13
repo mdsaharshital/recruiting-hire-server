@@ -50,7 +50,7 @@ const run = async () => {
 
       const filter = { _id: ObjectId(jobId) };
       const updateDoc = {
-        $push: { applicants: { id: ObjectId(userId), email } },
+        $push: { applicants: { userId: ObjectId(userId), email } },
       };
 
       const result = await jobCollection.updateOne(filter, updateDoc);
