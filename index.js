@@ -157,11 +157,11 @@ const run = async () => {
     //  update job
     app.put("/updateJob", async (req, res) => {
       const id = req.body._id;
-      const data = req.body;
+      const jobStatus = req.body.jobStatus;
       const filter = { _id: ObjectId(id) };
       const updateDoc = {
-        $push: {
-          ...data,
+        $set: {
+          jobStatus,
         },
       };
       const result = await jobCollection.updateOne(filter, updateDoc);
