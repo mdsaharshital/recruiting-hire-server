@@ -156,7 +156,7 @@ const run = async () => {
     });
     //  update job
     app.patch("/updateJob", async (req, res) => {
-      const id = req.body.id;
+      const id = req.body._id;
       const data = req.body;
       const filter = { _id: ObjectId(id) };
       const updateDoc = {
