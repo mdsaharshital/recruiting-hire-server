@@ -161,7 +161,7 @@ const run = async () => {
       const filter = { _id: ObjectId(id) };
       const updateDoc = {
         $push: {
-          data,
+          ...data,
         },
       };
       const result = await jobCollection.updateOne(filter, updateDoc);
