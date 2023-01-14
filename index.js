@@ -155,7 +155,7 @@ const run = async () => {
       res.send({ status: true, data: result });
     });
     //  update job
-    app.patch("/updateJob", async (req, res) => {
+    app.put("/updateJob", async (req, res) => {
       const id = req.body._id;
       const data = req.body;
       const filter = { _id: ObjectId(id) };
