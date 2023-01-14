@@ -146,13 +146,31 @@ const run = async () => {
       const result = await jobCollection.findOne({ _id: ObjectId(id) });
       res.send({ status: true, data: result });
     });
-
+    //post a job
     app.post("/job", async (req, res) => {
       const job = req.body;
 
       const result = await jobCollection.insertOne(job);
 
       res.send({ status: true, data: result });
+    });
+    //  update job
+    app.patch("/updateJob", async (req, res) => {
+      const id = req.body.id;
+      const data = req.body;
+      const filter = { _id: ObjectId(id) };
+      const updateDoc = {
+        $push: {
+          data,
+        },
+      };
+      const result = await jobCollection.updateOne(filter, updateDoc);
+
+      if (result?.acknowledged) {
+        return res.send({ status: true, data: result });
+      }
+
+      res.send({ status: false });
     });
   } finally {
   }
