@@ -47,7 +47,7 @@ const run = async () => {
     app.get("/candidate/:id", async (req, res) => {
       const id = req.params.id;
       console.log("id", id);
-      const result = await userCollection.findOne({ _id: ObjectId(jobId) });
+      const result = await userCollection.findOne({ _id: ObjectId(id) });
 
       if (result?.role === "candidate") {
         return res.send({ status: true, data: result });
