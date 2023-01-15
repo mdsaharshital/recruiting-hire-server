@@ -42,6 +42,19 @@ const run = async () => {
 
       res.send({ status: false });
     });
+
+    //get candidate details
+    app.get("/candidate/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("id", id);
+      const result = await userCollection.findOne({ _id: ObjectId(jobId) });
+
+      if (result?.role === "candidate") {
+        return res.send({ status: true, data: result });
+      }
+
+      res.send({ status: false });
+    });
     // apply jobs
     app.patch("/apply", async (req, res) => {
       const userId = req.body.userId;
