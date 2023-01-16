@@ -22,6 +22,7 @@ const run = async () => {
     const db = client.db("recruiting-hire");
     const userCollection = db.collection("users");
     const jobCollection = db.collection("jobs");
+    const messageCollection = db.collection("messages");
     console.log("db is connected");
     app.post("/user", async (req, res) => {
       const user = req.body;
@@ -49,7 +50,44 @@ const run = async () => {
       console.log("id", id);
       const result = await userCollection.findOne({ _id: ObjectId(id) });
 
-      if (result?.role === "candidate") {
+      if (result) {
+        return res.send({ status: true, data: result });
+      }
+
+      res.send({ status: false });
+    });
+    // add messages
+    app.put("/addMessages", async (req, res) => {
+      const email1 = req.body.users[0].email;
+      const email2 = req.body.users[1].email;
+      const newData = req.body;
+      console.log("data", newData);
+
+      const result = await messageCollection.findOneAndUpdate(
+        {
+          $and: [{ "users.email": email2 }, { "users.email": email1 }],
+        },
+        {
+          $set: newData,
+        }
+      );
+      console.log("result", result);
+      if (!result.value) {
+        const input = await messageCollection.insertOne(newData);
+        return res.send({ status: true, data: result });
+      }
+    });
+    app.get("/getMessages", async (req, res) => {
+      const email1 = req.query.email1;
+      const email2 = req.query.email2;
+      console.log("", req.query);
+      const result = await messageCollection.findOne({
+        $and: [{ "users.email": email2 }, { "users.email": email1 }],
+      });
+
+      if (result) {
+        console.log("", result);
+
         return res.send({ status: true, data: result });
       }
 
